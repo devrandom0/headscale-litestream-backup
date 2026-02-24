@@ -1,0 +1,42 @@
+# Minimal headscale config for use with Litestream backup.
+# Copy this to config/headscale.yaml and adjust for your environment.
+# Full reference: https://github.com/juanfont/headscale/blob/main/config-example.yaml
+
+server_url: https://your-headscale-domain.example.com
+listen_addr: 0.0.0.0:8080
+metrics_listen_addr: 0.0.0.0:9090
+grpc_listen_addr: 0.0.0.0:50443
+grpc_allow_insecure: false
+
+noise:
+  private_key_path: /var/lib/headscale/noise_private.key
+
+prefixes:
+  v4: 100.64.0.0/10
+  v6: fd7a:115c:a1e0::/48
+  allocation: sequential
+
+derp:
+  server:
+    enabled: false
+  urls:
+    - https://controlplane.tailscale.com/derpmap/default
+  auto_update_enabled: true
+  update_frequency: 24h
+
+database:
+  type: sqlite
+  sqlite:
+    path: /var/lib/headscale/db.sqlite
+    write_ahead_log: true
+    # REQUIRED: must be 0 so Litestream controls WAL checkpointing.
+    # Without this, headscale can checkpoint the WAL and cause Litestream
+    # to produce an incomplete/corrupt replica.
+    wal_autocheckpoint: 0
+
+log:
+  level: info
+
+policy:
+  mode: file
+  path: /etc/headscale/policy.hujson

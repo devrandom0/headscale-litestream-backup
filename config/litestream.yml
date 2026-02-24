@@ -1,0 +1,14 @@
+dbs:
+  - path: ${DB_PATH}
+    replicas:
+      - type: s3
+        bucket: ${S3_BUCKET}
+        path: ${LITESTREAM_BACKUP_DIR}
+        endpoint: ${S3_ENDPOINT}
+        region: ${S3_REGION}
+        access-key-id: ${S3_ACCESS_KEY_ID}
+        secret-access-key: ${S3_SECRET_ACCESS_KEY}
+        sync-interval: ${LITESTREAM_SYNC_INTERVAL}
+        retention: ${LITESTREAM_RETENTION}
+        retention-check-interval: ${LITESTREAM_RETENTION_CHECK_INTERVAL}
+        snapshot-interval: ${LITESTREAM_SNAPSHOT_INTERVAL}

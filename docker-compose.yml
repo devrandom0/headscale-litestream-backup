@@ -1,0 +1,15 @@
+services:
+  headscale:
+    build: .
+    container_name: headscale
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8080:8080"   # headscale gRPC/HTTP
+      - "9090:9090"   # headscale metrics
+    volumes:
+      - headscale-data:/var/lib/headscale
+      - ./config/headscale.yaml:/etc/headscale/config.yaml:ro
+
+volumes:
+  headscale-data:
