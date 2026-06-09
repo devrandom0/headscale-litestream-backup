@@ -1,6 +1,6 @@
 ARG HEADSCALE_VERSION=0.28.0
 
-FROM alpine:3.23 AS litestream
+FROM alpine:3.24 AS litestream
 ARG LITESTREAM_VERSION=0.5.9
 RUN arch=$(uname -m | sed s/aarch64/arm64/ | sed s/amd64/x86_64/) && \
     wget -q -O /tmp/litestream.tar.gz \
@@ -10,7 +10,7 @@ RUN arch=$(uname -m | sed s/aarch64/arm64/ | sed s/amd64/x86_64/) && \
 
 FROM ghcr.io/juanfont/headscale:v${HEADSCALE_VERSION} AS headscale
 
-FROM alpine:3.23
+FROM alpine:3.24
 COPY --from=headscale /ko-app/headscale /usr/local/bin/headscale
 COPY --from=litestream /usr/local/bin/litestream /usr/local/bin/litestream
 
